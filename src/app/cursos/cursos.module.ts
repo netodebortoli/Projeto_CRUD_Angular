@@ -6,6 +6,7 @@ import { SharedModule } from '../shared/shared.module';
 import { CursosRoutingModule } from './cursos-routing.module';
 import { CursosComponent } from './cursos/cursos.component';
 import { CursoFormComponent } from './curso-form/curso-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { CursoFormComponent } from './curso-form/curso-form.component';
     CommonModule,
     CursosRoutingModule,
     AppMaterialModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ]
 })
 export class CursosModule { }
