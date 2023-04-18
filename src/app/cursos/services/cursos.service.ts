@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Cursos } from '../model/cursos';
-
 import { delay, first, tap } from 'rxjs/operators';
+
+import { Cursos } from '../model/cursos';
 
 
 @Injectable({
@@ -19,7 +19,11 @@ export class CursosService {
     pipe(
       first(),
       delay(2000),
-        tap(cursos => console.log(cursos))
+      tap(cursos => console.log(cursos))
     )
+  }
+
+  saveCurso(novoRegistro: Cursos) {
+    return this.httpClient.post<Cursos>(this.API, novoRegistro);
   }
 }
