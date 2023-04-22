@@ -23,7 +23,7 @@ export class CursosService {
     )
   }
 
-  saveCurso(novoRegistro: Cursos) {
+  saveCurso(novoRegistro: Partial<Cursos>) {
     return this.httpClient.post<Cursos>(this.API, novoRegistro);
   }
 }
