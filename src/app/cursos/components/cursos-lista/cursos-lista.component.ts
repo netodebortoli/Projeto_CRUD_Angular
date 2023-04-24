@@ -1,7 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Cursos } from '../model/cursos';
+import { Cursos } from '../../model/cursos';
 
 @Component({
   selector: 'app-cursos-lista',
@@ -11,14 +10,14 @@ import { Cursos } from '../model/cursos';
 export class CursosListaComponent {
 
   readonly displayedColumns = ['nome', 'categoria', 'acoes'];
-  @Input() cursos: Cursos[] = [];
 
-  constructor(private router: Router,
-    private route: ActivatedRoute) {
+  @Input() cursos: Cursos[] = [];
+  @Output() add = new EventEmitter(false);
+
+  constructor() {
   }
 
   onAdd() {
-    this.router.navigate(['novo'], { relativeTo: this.route });
+    this.add.emit(true);
   }
-
 }

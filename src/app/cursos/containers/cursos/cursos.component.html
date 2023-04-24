@@ -5,10 +5,13 @@
       <span>Cursos Disponíveis</span>
     </mat-toolbar>
 
+    <!-- [cursos]="cursos" -> data binding = Input -->
+    <!-- (add)="onAdd()" -> output -->
     <div class="mat-elevation-z8 coluna-flex">
     <app-cursos-lista
       *ngIf="cursos$ | async as cursos; else loading"
       [cursos]="cursos"
+      (add)="onAdd()"
     ></app-cursos-lista>
 
     <ng-template #loading>
