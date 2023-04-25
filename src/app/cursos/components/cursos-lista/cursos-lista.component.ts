@@ -13,11 +13,16 @@ export class CursosListaComponent {
 
   @Input() cursos: Cursos[] = [];
   @Output() add = new EventEmitter(false);
+  @Output() edit = new EventEmitter(false);
 
   constructor() {
   }
 
   onAdd() {
     this.add.emit(true);
+  }
+
+  onEdit(curso: Cursos) {
+    this.edit.emit(curso);
   }
 }

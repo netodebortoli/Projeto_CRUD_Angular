@@ -26,4 +26,8 @@ export class CursosService {
   saveCurso(novoRegistro: Partial<Cursos>) {
     return this.httpClient.post<Cursos>(this.API, novoRegistro);
   }
+
+  buscarCursoPorID(id: string) {
+    return this.httpClient.get<Cursos>(`${this.API}/${id}`);
+  }
 }

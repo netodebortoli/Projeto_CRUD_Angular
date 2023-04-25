@@ -5,13 +5,17 @@
       <span>Cursos Disponíveis</span>
     </mat-toolbar>
 
-    <!-- [cursos]="cursos" -> data binding = Input -->
-    <!-- (add)="onAdd()" -> output -->
+    <!--
+      [cursos]="cursos" : data-bind(origem dos dados) = input
+      (add)="onAdd()" : output
+      (edit)="onEdit($event)" : output (escutar o evento. variavel $event é um objeto de eventos do TS que é recebido ao escutar o evento)
+    -->
     <div class="mat-elevation-z8 coluna-flex">
     <app-cursos-lista
       *ngIf="cursos$ | async as cursos; else loading"
       [cursos]="cursos"
       (add)="onAdd()"
+      (edit)="onEdit($event)"
     ></app-cursos-lista>
 
     <ng-template #loading>
