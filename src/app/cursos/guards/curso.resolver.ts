@@ -15,7 +15,7 @@ export class CursoResolver implements Resolve<Cursos> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Cursos> {
     if (route.params && route.params['id']) {
-      this.cursoServico.buscarCursoPorID(route.params['id']);
+      return this.cursoServico.buscarCursoPorID(route.params['id']);
     }
     return of({ _id: '', nome: '', categoria: '' });
   }

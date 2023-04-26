@@ -16,14 +16,25 @@ export class CursosService {
 
   list() {
     return this.httpClient.get<Cursos[]>(this.API).
-    pipe(
-      first(),
-      delay(2000),
-      tap(cursos => console.log(cursos))
-    )
+      pipe(
+        first(),
+        delay(2000),
+        // tap(cursos => console.log(cursos))
+      )
   }
 
-  saveCurso(novoRegistro: Partial<Cursos>) {
+  saveCurso(registro: Partial<Cursos>) {
+    if (registro._id) {
+      return this.atualizar(registro);
+    }
+    return this.salvar(registro);
+  }
+
+  private atualizar(registro: Partial<Cursos>) {
+    return this.httpClient.put<Cursos>(`${this.API}/${registro._id}`, registro);
+  }
+
+  private salvar(novoRegistro: Partial<Cursos>) {
     return this.httpClient.post<Cursos>(this.API, novoRegistro);
   }
 
