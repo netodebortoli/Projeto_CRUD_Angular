@@ -14,6 +14,7 @@ export class CursosListaComponent {
   @Input() cursos: Cursos[] = [];
   @Output() add = new EventEmitter(false);
   @Output() edit = new EventEmitter(false);
+  @Output() remove = new EventEmitter(false);
 
   constructor() {
   }
@@ -24,5 +25,9 @@ export class CursosListaComponent {
 
   onEdit(curso: Cursos) {
     this.edit.emit(curso);
+  }
+
+  onDelete(curso: Cursos) {
+    this.remove.emit(curso);
   }
 }

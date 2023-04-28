@@ -4,11 +4,13 @@ import { NgModule } from '@angular/core';
 import { AppMaterialModule } from './app-material/app-material.module';
 import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
 import { CategoriaPipe } from './pipes/categoria.pipe';
+import { ComponenteConfirmacaoComponent } from './components/componente-confirmacao/componente-confirmacao.component';
 
 @NgModule({
   declarations: [
     ErrorDialogComponent,
-    CategoriaPipe
+    CategoriaPipe,
+    ComponenteConfirmacaoComponent
   ],
   imports: [
     CommonModule,
@@ -16,7 +18,8 @@ import { CategoriaPipe } from './pipes/categoria.pipe';
   ],
   exports: [
     ErrorDialogComponent,
-    CategoriaPipe
+    CategoriaPipe,
+    ComponenteConfirmacaoComponent
   ]
 })
 export class SharedModule { }

@@ -50,7 +50,7 @@ export class CursoFormComponent implements OnInit {
   }
 
   private onSucess() {
-    this.snackBar.open('Curso criado com sucesso!', '', {
+    this.snackBar.open('Curso salvo com sucesso!', '', {
       duration: 5000
     });
     this.location.back();

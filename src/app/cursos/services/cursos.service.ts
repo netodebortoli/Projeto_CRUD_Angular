@@ -41,4 +41,9 @@ export class CursosService {
   buscarCursoPorID(id: string) {
     return this.httpClient.get<Cursos>(`${this.API}/${id}`);
   }
+
+  removerCursoPorID(id: string) {
+    return this.httpClient.delete(`${this.API}/${id}`);
+  }
+
 }
