@@ -53,10 +53,9 @@ export class CursosComponent {
 
   onDelete(curso: Cursos) {
 
-    const dialogRef = this.dialog.open(ComponenteConfirmacaoComponent
-      , {
-        data: 'Deseja realmente remover este curso?',
-      });
+    const dialogRef = this.dialog.open(ComponenteConfirmacaoComponent, {
+      data: 'Deseja realmente remover este curso?',
+    });
 
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
