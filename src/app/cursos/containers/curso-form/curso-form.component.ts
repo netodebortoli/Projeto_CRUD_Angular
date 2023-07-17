@@ -1,9 +1,10 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { NonNullableFormBuilder, Validators } from '@angular/forms';
+import { FormGroup, NonNullableFormBuilder, UntypedFormArray, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 
+import { Aulas } from '../../model/aulas';
 import { Cursos } from '../../model/cursos';
 import { CursosService } from '../../services/cursos.service';
 
@@ -14,39 +15,60 @@ import { CursosService } from '../../services/cursos.service';
 })
 export class CursoFormComponent implements OnInit {
 
-  form = this.formBuilder.group({
-    _id: [''],
-    nome: ['',
-      [Validators.required,
-      Validators.minLength(5),
-      Validators.maxLength(100)]],
-    categoria: ['',
-      [Validators.required]]
-  });
+  // Declaração da váriavel de formulário com uso de !
+  // Isso permite nao inicializar a variavel no momento da sua declaração
+  form!: FormGroup;
 
   constructor(private formBuilder: NonNullableFormBuilder,
     private servico: CursosService,
     private snackBar: MatSnackBar,
     private location: Location,
     private router: ActivatedRoute) {
+
   }
 
   ngOnInit(): void {
     const curso: Cursos = this.router.snapshot.data['curso'];
-    this.form.setValue({
-      _id: curso._id,
-      nome: curso.nome,
-      categoria: curso.categoria
-    })
+
+    this.form = this.formBuilder.group({
+      _id: [curso._id],
+      nome: [curso.nome,
+      [Validators.required,
+      Validators.minLength(5),
+      Validators.maxLength(100)]],
+      categoria: [curso.categoria,
+      [Validators.required]],
+      aulas: this.formBuilder.array(this.obterAulas(curso))
+    });
   }
 
   onSubmit() {
     this.servico.saveCurso(this.form.value).subscribe({
-      next: (data) => this.onSucess(),
+      next: () => this.onSucess(),
       error: () => {
         this.onError();
       }
     })
+  }
+
+  private obterAulas(curso: Cursos) {
+    const aulas = [];
+    if (curso?.aulas) {
+      curso.aulas.forEach(
+        aula => aulas.push(this.criarAula(aula))
+      );
+    } else {
+      aulas.push(this.criarAula());
+    }
+    return aulas;
+  }
+
+  private criarAula(aula: Aulas = { id: '', nome: '', youtubeUrl: '' }) {
+    return this.formBuilder.group({
+      id: [aula.id],
+      nome: [aula.nome],
+      youtubeUrl: [aula.youtubeUrl]
+    });
   }
 
   onCancel() {
@@ -64,6 +86,10 @@ export class CursoFormComponent implements OnInit {
     this.snackBar.open('Erro ao salvar curso!', '', {
       duration: 5000
     });
+  }
+
+  getAulasFormArray() {
+    return (<UntypedFormArray>this.form.get('aulas')).controls;
   }
 
   getErrorMessage(fieldName: string) {
@@ -85,4 +111,5 @@ export class CursoFormComponent implements OnInit {
 
     return 'Campo Inválido';
   }
+
 }

@@ -17,6 +17,6 @@ export class CursoResolver implements Resolve<Cursos> {
     if (route.params && route.params['id']) {
       return this.cursoServico.buscarCursoPorID(route.params['id']);
     }
-    return of({ _id: '', nome: '', categoria: '' });
+    return of({ _id: '', nome: '', categoria: '', aulas: [] });
   }
 }
