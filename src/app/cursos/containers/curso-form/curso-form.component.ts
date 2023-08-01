@@ -38,17 +38,17 @@ export class CursoFormComponent implements OnInit {
       Validators.maxLength(100)]],
       categoria: [curso.categoria,
       [Validators.required]],
-      aulas: this.formBuilder.array(this.obterAulas(curso))
+      aulas: this.formBuilder.array(this.obterAulas(curso), Validators.required)
     });
   }
 
   onSubmit() {
-    this.servico.saveCurso(this.form.value).subscribe({
-      next: () => this.onSucess(),
-      error: () => {
-        this.onError();
-      }
-    })
+    if (this.form.valid) {
+      this.servico.saveCurso(this.form.value)
+        .subscribe(result => this.onSuccess(), error => this.onError());
+    } else {
+      alert('Formulário inválido');
+    }
   }
 
   private obterAulas(curso: Cursos) {
@@ -66,16 +66,36 @@ export class CursoFormComponent implements OnInit {
   private criarAula(aula: Aulas = { id: '', nome: '', youtubeUrl: '' }) {
     return this.formBuilder.group({
       id: [aula.id],
-      nome: [aula.nome],
-      youtubeUrl: [aula.youtubeUrl]
+      nome: [aula.nome,
+      [Validators.required,
+      Validators.maxLength(100),
+      Validators.minLength(5)]],
+      youtubeUrl: [aula.youtubeUrl,
+      Validators.required,
+      Validators.maxLength(11),
+      Validators.minLength(10)]
     });
+  }
+
+  getAulasFormArray() {
+    return (<UntypedFormArray>this.form.get('aulas')).controls;
+  }
+
+  addAula() {
+    const aula = this.form.get('aulas') as UntypedFormArray;
+    aula.push(this.criarAula());
+  }
+
+  removerAula(index: number) {
+    const aula = this.form.get('aulas') as UntypedFormArray;
+    aula.removeAt(index);
   }
 
   onCancel() {
     this.location.back();
   }
 
-  private onSucess() {
+  private onSuccess() {
     this.snackBar.open('Curso salvo com sucesso!', '', {
       duration: 5000
     });
@@ -86,10 +106,6 @@ export class CursoFormComponent implements OnInit {
     this.snackBar.open('Erro ao salvar curso!', '', {
       duration: 5000
     });
-  }
-
-  getAulasFormArray() {
-    return (<UntypedFormArray>this.form.get('aulas')).controls;
   }
 
   getErrorMessage(fieldName: string) {
@@ -110,6 +126,11 @@ export class CursoFormComponent implements OnInit {
     }
 
     return 'Campo Inválido';
+  }
+
+  isFormularioRequired() {
+    const aula = this.form.get('aulas') as UntypedFormArray;
+    return !aula.valid && aula.hasError('required') && aula.touched;
   }
 
 }

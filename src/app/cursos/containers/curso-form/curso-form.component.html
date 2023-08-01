@@ -23,10 +23,14 @@
 
       <mat-toolbar>
         <span>Aulas</span>
-        <button mat-icon-button color="primary">
+        <button mat-icon-button color="primary" (click)="addAula()">
           <mat-icon aria-label="Adicionar uma nova aula">add</mat-icon>
         </button>
       </mat-toolbar>
+
+      <mat-error *ngIf="isFormularioRequired()" class="form-array-error">
+        <span>Adicione pelo menos uma aula.</span>
+      </mat-error>
 
       <table style="width: 100%;" formArrayName="aulas" *ngFor="let aula of getAulasFormArray(); let i = index">
         <tr [formGroupName]="i">
@@ -34,14 +38,24 @@
             <mat-form-field class="full">
               <mat-label>Nome da Aula</mat-label>
               <input matInput formControlName="nome" />
+              <mat-error *ngIf="getAulasFormArray()[i].get('nome')?.invalid">Campo inválido</mat-error>
             </mat-form-field>
           </td>
           <td style="width: 30%;">
             <mat-form-field class="full">
-              <mat-label>Link da Aula</mat-label>
+              <mat-label>URL</mat-label>
               <span matPrefix>https://youtu.be/</span>
               <input matInput formControlName="youtubeUrl" />
+              <mat-error *ngIf="getAulasFormArray()[i].get('youtubeUrl')?.invalid">Campo inválido</mat-error>
             </mat-form-field>
+          </td>
+          <td>
+            <button mat-icon-button color="warn" (click)="removerAula(i)">
+              <mat-icon aria-label="Remover Aula">delete</mat-icon>
+            </button>
+            <!-- <button mat-icon-button color="primary" (click)="editarAula()">
+              <mat-icon aria-label="Editar Aula">edit</mat-icon>
+            </button> -->
           </td>
         </tr>
       </table>
