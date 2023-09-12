@@ -31,7 +31,7 @@ export class FormUtilsService {
     return this.getErrorMessageFromField(field);
   }
 
-  getErrorMessageFromField(field: UntypedFormControl) {
+  private getErrorMessageFromField(field: UntypedFormControl) {
 
     if (field?.hasError('required')) {
       return 'Campo obrigatório';

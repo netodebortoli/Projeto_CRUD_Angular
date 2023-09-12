@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Aulas } from '../../model/aulas';
 import { Cursos } from '../../model/cursos';
 import { CursosService } from '../../services/cursos.service';
+import { FormUtilsService } from 'src/app/shared/form/form-utils.service';
 
 @Component({
   selector: 'app-curso-form',
@@ -23,8 +24,8 @@ export class CursoFormComponent implements OnInit {
     private servico: CursosService,
     private snackBar: MatSnackBar,
     private location: Location,
-    private router: ActivatedRoute) {
-
+    private router: ActivatedRoute,
+    public formUtils: FormUtilsService) {
   }
 
   ngOnInit(): void {
@@ -45,9 +46,11 @@ export class CursoFormComponent implements OnInit {
   onSubmit() {
     if (this.form.valid) {
       this.servico.saveCurso(this.form.value)
-        .subscribe(result => this.onSuccess(), error => this.onError());
+        .subscribe(
+          result => this.onSuccess(),
+          error => this.onError());
     } else {
-      alert('Formulário inválido');
+      this.formUtils.validateAllFormFields(this.form);
     }
   }
 
@@ -106,31 +109,6 @@ export class CursoFormComponent implements OnInit {
     this.snackBar.open('Erro ao salvar curso!', '', {
       duration: 5000
     });
-  }
-
-  getErrorMessage(fieldName: string) {
-    const field = this.form.get(fieldName);
-
-    if (field?.hasError('required')) {
-      return 'Campo obrigatório';
-    }
-
-    if (field?.hasError('minlength')) {
-      const requiredLength: number = field.errors ? field.errors['minlength']['requiredLength'] : 5;
-      return `Tamanho mínimo precisa ser de ${requiredLength} caracteres.`;
-    }
-
-    if (field?.hasError('maxlength')) {
-      const requiredLength: number = field.errors ? field.errors['maxlength']['requiredLength'] : 100;
-      return `Tamanho máximo excedido de ${requiredLength} caracteres.`;
-    }
-
-    return 'Campo Inválido';
-  }
-
-  isFormularioRequired() {
-    const aula = this.form.get('aulas') as UntypedFormArray;
-    return !aula.valid && aula.hasError('required') && aula.touched;
   }
 
 }
