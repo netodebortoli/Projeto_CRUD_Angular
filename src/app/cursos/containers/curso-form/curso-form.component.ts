@@ -38,7 +38,7 @@ export class CursoFormComponent implements OnInit {
       Validators.maxLength(100)]],
       categoria: [curso.categoria,
       [Validators.required]],
-      aulas: this.formBuilder.array(this.obterAulas(curso), Validators.required)
+      aulas: this.formBuilder.array(this.obterAulas(curso), [Validators.required])
     });
   }
 
@@ -71,9 +71,9 @@ export class CursoFormComponent implements OnInit {
       Validators.maxLength(100),
       Validators.minLength(5)]],
       youtubeUrl: [aula.youtubeUrl,
-      Validators.required,
+      [Validators.required,
       Validators.maxLength(11),
-      Validators.minLength(10)]
+      Validators.minLength(10)]]
     });
   }
 
